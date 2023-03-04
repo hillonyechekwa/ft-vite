@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import { Routes, Route } from 'react-router-dom'
-import Welcome from './welcome'
+import Welcome from './Welcome'
 import About from './About'
 import Services from './Services'
 import Contact from './Contact'
