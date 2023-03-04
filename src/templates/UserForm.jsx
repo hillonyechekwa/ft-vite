@@ -1,7 +1,12 @@
 import { useState } from "react";
 import {useFormik} from 'formik'
 import { Link } from "react-router-dom";
-import Styles from '../styles/UserForm'
+import Styles from '../styles/form.module.scss'
+import {Helmet} from 'react-helmet'
+import CallButton from '../components/CallButton'
+
+
+
 
 
 
@@ -13,6 +18,7 @@ const UserForm = ({formType, action}) => {
         initialValues: {
             username: '',
             email: '',
+            phone: '',
             password: ''
         },
         onSubmit: (values) => {
@@ -32,57 +38,73 @@ const UserForm = ({formType, action}) => {
     })
     
     return(
-        <main>
+        <main className={Styles.formPageContainer}>
             <header>
-                {formType === 'signup'? <h1>Sign Up</h1> : <h1 className="">Sign In</h1>}
+                {formType === 'signup'? <div><img src="/images/logo-colored.svg" alt="fundamental technology logo" />" <p>Login to your profile</p></div> : <div><img src="/images/logo-colored.svg" alt="fundamental technology logo" />" <p>Fill in your details to sign up</p></div>}
             </header>
             <form onSubmit={formik.handleSubmit}>
-            <section className="">
-                <label htmlFor="username" className="">Username:</label>
-                <input
-                    required
-                    id="username"
-                    name="username"
-                    type="text"
-                    placeholder=" enter a username"
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    className=""
-                />
-                </section>
-            <section className="">
-                <label htmlFor="email" className="">Email:</label>
+                {formType === 'signup' && (
+                    <>
+                    <section className={Styles.formControl}>
+                        <label htmlFor="username" className="">
+                        <input
+                            required
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder=" fullname"
+                            onChange={formik.handleChange}
+                            value={formik.values.username}
+                            className="" />
+                            </label>
+                    </section><section className={Styles.formControl}>
+                            <label htmlFor="email" className="">
+                            <input
+                                required
+                                id="phone"
+                                name="phone"
+                                type="phone"
+                                placeholder=" phone number"
+                                onChange={formik.handleChange}
+                                value={formik.values.phone}
+                                className="" />
+                                </label>
+                        </section>
+                    </>
+                )}
+            <section className={Styles.formControl}>
+                <label htmlFor="email" className="">
                 <input
                     required
                     id="email"
                     name="email"
                     type="email"
-                    placeholder=" enter your email address"
+                    placeholder=" email address"
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     className=""
                 />
-                </section>
-            <section className="">
-                <label htmlFor="password" className="">Password:</label>
+                </label>
+                </section>    
+                <section className={Styles.formControl}>
+                <label htmlFor="password" className="">
                 <input
                     required
                     id="password"
                     name="password"
                     type="password"
-                    placeholder=" enter your password"
+                    placeholder=" password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     className=""
                 />
+                </label>
                 </section>
-                <button type="submit">
-                    {formType === 'signup'? <p>Sign Up</p> : <p className="">Sign In</p>}
-                </button>
+                <CallButton type="submit" btnType="secondary">
+                    submit
+                </CallButton>
             </form>
-
-            {formType === 'signup'? <h3>{`Already have an account?`} <Link to="/signin">SignIn</Link></h3> : <h3 className="">{`Don't have an account?`}<Link to="/signup">SignUp</Link></h3>}
-
+                    {/* TODO: chore add google identity api for google sign in! */}
         </main>
     )
 }

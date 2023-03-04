@@ -1,8 +1,10 @@
+import {useState} from 'react'
 import { NavLink } from "react-router-dom";
 import { isSignedInVar } from "../../cache";
 import { useApolloClient, gql, useQuery } from "@apollo/client";
 import Styles from '../styles/nav.module.scss'
 import LinkButton from './LinkButton'
+import CallButton from './CallButton'
 import {FaCartPlus, FaChevronCircleDown, FaUserCircle} from 'react-icons/fa'
 import { IconContext } from "react-icons";
 
@@ -12,22 +14,23 @@ const ISSIGNED_IN = gql`
     isSignedIn @client
   }`
 
-const Nav = () => {
-
-  const client = useApolloClient()
-  const {data} = useQuery(ISSIGNED_IN)
-
-  console.log('data', data)
+const Nav = ({setModal, formType}) => { 
 
 
-  const handleSignOut = () => {
-    client.cache.evict({fieldName: 'me'})
-    client.cache.gc()
+    const client = useApolloClient()
+    const {data} = useQuery(ISSIGNED_IN)
 
-    localStorage.removeItem('token')
+    console.log('data', data)
 
-    isSignedInVar(false)
-  }
+
+    const handleSignOut = () => {
+        client.cache.evict({fieldName: 'me'})
+        client.cache.gc()
+
+        localStorage.removeItem('token')
+
+        isSignedInVar(false)
+    }
 
 
   return data.isSignedIn ? (
@@ -103,7 +106,15 @@ const Nav = () => {
                 </li>
                 <li className={Styles.cta}>
                     <LinkButton path="/contact" btnType="three">Book An Appointment</LinkButton>
-                    <LinkButton path="/signup" btnType="secondary">Get Started</LinkButton>
+                    {/* add set modal prop back to call button */}
+                    <button onClick={() => {
+                        setModal()
+                        formType("signin")
+                    }}> Login</button>
+                    <button onClick={() => {
+                        setModal()
+                        formType("signup")
+                    }}> Get Started</button>
                 </li>
             </ul>
         </nav>

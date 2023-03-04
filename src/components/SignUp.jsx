@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { useMutation, gql } from "@apollo/client"
-import UserForm from "./templates/UserForm"
-import { isSignedInVar } from "../cache"
+import UserForm from "../templates/UserForm"
+import { isSignedInVar } from "../../cache"
 import { useNavigate } from "react-router-dom"
+import {Helmet} from 'react-helmet'
 
 export const SIGNUP_USER = gql`
-    mutation signUp($username: String!, $email: String!, $password: String!){
-        signUp(username: $username, email: $email, password: $password)
+    mutation signUp($username: String!, $email: String!, $phone: String!, $password: String!){
+        signUp(username: $username, email: $email, phone: $phone, password: $password)
     }`
 
 
@@ -27,7 +28,14 @@ const SignUp = () => {
     if (loading) return <h1>Loading....</h1>
     if (error) return <h1>An error occured</h1>
     return(
+        <>
+        <Helmet>
+            <title>
+                Fundamental Technology - Sign Up
+            </title>
+        </Helmet>
         <UserForm formType="signup" action={signUp} />
+        </>
     )
 }
 
